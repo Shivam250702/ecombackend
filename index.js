@@ -200,7 +200,7 @@ server.post("/create-payment-intent", async (req, res) => {
 main().catch((err) => console.log(err));
 main().catch(err=>console.log(err));
 async function main(){
-    await mongoose.connect('mongodb://127.0.0.1:27017/eco');
+    await mongoose.connect(process.env.MONGODB_URL);
     console.log("database connected");
     //it shows database is connected
 }
@@ -212,7 +212,7 @@ server.post ('/products',createProduct);
 
 
 
-server.listen(process.env.port,()=>{
+server.listen(process.env.PORT,()=>{
     console.log("server started");
 
     //it shows server is started
