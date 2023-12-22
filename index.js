@@ -14,6 +14,7 @@ const cookieParser = require('cookie-parser');
 const { createProduct } = require('./controller/Product');
 const productsRouter = require('./routes/Products');
 const categoriesRouter = require('./routes/Categories');
+const nodemailer=require('nodemailer');
 const brandsRouter = require('./routes/Brands');
 const usersRouter = require('./routes/Users');
 const authRouter = require('./routes/Auth');
@@ -23,8 +24,30 @@ const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 const path = require('path');
 const { Order } = require('./model/Order');
-
+const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
+const { env } = require('process');
 console.log(process.env)
+
+//Emails
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+    user: "shivamdotsingh@gmail.com",
+    pass: process.env.MAIL_PASSWORD,
+  },
+});
+
+// async..await is not allowed in global scope, must use a wrapper
+
+
+
+
+
+
 
 // Webhook
 
@@ -99,6 +122,22 @@ server.use('/users', isAuth(), usersRouter.router);
 server.use('/auth', authRouter.router);
 server.use('/cart', isAuth(), cartRouter.router);
 server.use('/orders', isAuth(), ordersRouter.router);
+//Mail Endpoint
+server.post('/mail',async(req,res)=>{
+  // send mail with defined transport object
+  const {to}=req.body;
+  const info = await transporter.sendMail({
+    from: '"E-commerce" <shivamdotsingh@gmail.com>', // sender address
+    to: to, // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+res.json(info);
+
+
+})
+
 
 // Passport Strategies
 passport.use(
@@ -172,7 +211,7 @@ passport.deserializeUser(function (user, cb) {
 
 
 // This is your test secret API key.
-const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
+
 
 
 server.post("/create-payment-intent", async (req, res) => {
@@ -218,7 +257,7 @@ server.post ('/products',createProduct);
 
 
 server.listen(process.env.PORT,()=>{
-    console.log("server started");
+    console.log(`Server is running on port ${process.env.PORT}`);
 
     //it shows server is started
 })
