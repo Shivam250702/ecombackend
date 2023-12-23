@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const server = express();
 const mongoose = require('mongoose');
@@ -24,7 +24,7 @@ const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 const path = require('path');
 const { Order } = require('./model/Order');
-const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SERVER_KEY);
 const { env } = require('process');
 console.log(process.env)
 
@@ -51,7 +51,7 @@ const transporter = nodemailer.createTransport({
 
 // Webhook
 
-// TODO: we will capture actual order after deploying out server live on public URL
+
 
 const endpointSecret = process.env.ENDPOINT_SECRET;
 
@@ -93,11 +93,11 @@ server.post('/webhook', express.raw({type: 'application/json'}), async (request,
 
 const opts = {};
 opts.jwtFromRequest = cookieExtractor;
-opts.secretOrKey = process.env.JWT_SECRET_KEY; // TODO: should not be in code;
+opts.secretOrKey = process.env.JWT_SECRET_KEY; 
 
 //middlewares
 
-server.use(express.static(path.resolve(__dirname,'build')))
+server.use(express.static(path.resolve(__dirname, 'build')));
 server.use(cookieParser());
 server.use(
   session({
@@ -137,14 +137,18 @@ res.json(info);
 
 
 })
-
+server.get('*', (req, res) =>
+  res.sendFile(path.resolve('build', 'index.html'))
+);
 
 // Passport Strategies
 passport.use(
   'local',
-  new LocalStrategy(
-    {usernameField:'email'},
-    async function (email, password, done) {
+  new LocalStrategy({ usernameField: 'email' }, async function (
+    email,
+    password,
+    done
+  ) {
     // by default passport uses username
     console.log({email,password})
     try {
@@ -163,8 +167,11 @@ passport.use(
           if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
             return done(null, false, { message: 'invalid credentials' });
           }
-          const token = jwt.sign(sanitizeUser(user), process.env.JWT_SECRET_KEY);
-          done(null, {id:user.id, role:user.role, token}); // this lines sends to serializer
+          const token = jwt.sign(
+            sanitizeUser(user),
+            process.env.JWT_SECRET_KEY
+          );
+          done(null, { id: user.id, role: user.role, token }); // this lines sends to serializer
         }
       );
     } catch (err) {
@@ -219,14 +226,14 @@ server.post("/create-payment-intent", async (req, res) => {
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: totalAmount*100, // for decimal compensation
-    currency: "inr",
+    amount: totalAmount * 100, // for decimal compensation
+    currency: 'inr',
     automatic_payment_methods: {
       enabled: true,
     },
-    metadata:{
-  orderId
-    }
+    metadata: {
+      orderId,
+    },
   });
 
   res.send({
