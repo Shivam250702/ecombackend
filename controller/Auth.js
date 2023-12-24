@@ -1,7 +1,6 @@
 const { User } = require('../model/User');
 const crypto = require('crypto');
-const { toast } = require('react-toastify');
-require('react-toastify/dist/ReactToastify.css');
+
 const { sanitizeUse,sendMail } = require('../services/common');
 const jwt = require('jsonwebtoken');
 
