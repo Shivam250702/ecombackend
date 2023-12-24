@@ -155,7 +155,7 @@ exports.invoiceTemplate = function(order){
            <tr>
              <td align="center" valign="top" style="padding: 36px 24px;">
                <a href="https://sendgrid.com" target="_blank" style="display: inline-block;">
-                 <img src="./img/paste-logo-light@2x.png" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
+                 <img src="https://w7.pngwing.com/pngs/179/1015/png-transparent-computer-icons-check-mark-adobe-acrobat-green-tick-trademark-logo-grass.png" alt="Logo" border="0" width="48" style="display: block; width: 48px; max-width: 48px; min-width: 48px;">
                </a>
              </td>
            </tr>

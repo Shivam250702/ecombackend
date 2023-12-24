@@ -1,5 +1,7 @@
 const { User } = require('../model/User');
 const crypto = require('crypto');
+const { toast } = require('react-toastify');
+require('react-toastify/dist/ReactToastify.css');
 const { sanitizeUse,sendMail } = require('../services/common');
 const jwt = require('jsonwebtoken');
 
@@ -29,13 +31,16 @@ exports.createUser = async (req, res) => {
                 httpOnly: true,
               })
               .status(201)
+
               .json({id: doc.id, role: doc.role});
+              toast.success('Signup successful!');
           }
         });
       }
     );
   } catch (err) {
     res.status(400).json(err);
+    toast.error('Signup failed. Please try again.');
   }
 };
 
