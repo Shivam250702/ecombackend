@@ -35,7 +35,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+
     user: "shivamdotsingh@gmail.com",
     pass: process.env.MAIL_PASSWORD,
   },
