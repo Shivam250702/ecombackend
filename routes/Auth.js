@@ -10,4 +10,4 @@ router.post('/signup', createUser)
 .get('/logout', logout)
 .post('/reset-password-request', resetPasswordRequest)
 .post('/reset-password', resetPassword)
-exports.router = router;
+exports.router = router; //vercel
