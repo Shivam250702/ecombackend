@@ -10,4 +10,4 @@ router.post('/', createOrder)
       .get('/',fetchAllOrders)
 
 
-exports.router = router;
+exports.router = router;  //vercel  
